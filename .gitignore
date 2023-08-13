@@ -40,4 +40,9 @@
 
 # Ignore state of Terraform
 /infra/development/terraform.tfstate
+/infra/development/lambda/lambda.zip
+/infra/development/lambda/*_lambda
 .terraform*
+
+# Ignore lambda compiled programs
+/lambda/build/*_lambda

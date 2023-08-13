@@ -9,6 +9,8 @@ provider "aws" {
   endpoints {
     sqs = "http://cloud:4566"
     sns = "http://cloud:4566"
+    lambda = "http://cloud:4566"
+    iam = "http://cloud:4566"
   }
 
   default_tags {
