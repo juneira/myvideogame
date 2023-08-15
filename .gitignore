@@ -35,8 +35,8 @@
 /config/master.key
 
 # Ignore Docker's files
-/Dockerfile
-/docker-compose.yml
+# /Dockerfile
+# /docker-compose.yml
 
 # Ignore state of Terraform
 /infra/development/terraform.tfstate

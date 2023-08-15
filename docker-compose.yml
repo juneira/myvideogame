@@ -1,0 +1,50 @@
+services:
+  web:
+    build: .
+    container_name: mvg_web
+    ports:
+      - "80:3000"
+    environment:
+      - DB_DATABASE=myvideogame_development
+      - DB_HOST=pg
+      - DB_USER=postgres
+      - DB_PASSWORD=myvideogame
+    volumes:
+      - .:/usr/src/app
+
+  pg:
+    image: postgres:15.3-alpine3.18
+    container_name: mvg_pg
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=myvideogame
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  cloud:
+    image: localstack/localstack:latest
+    container_name: mvg_cloud
+    environment:
+      - SERVICES=sns,sqs,lambda
+      - DATA_DIR=/var/lib/localstack
+      - AWS_DEFAULT_REGION=eu-west-2
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "cloud_data:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  infra:
+    image: hashicorp/terraform:latest
+    container_name: mvg_infra
+    working_dir: /infra
+    volumes:
+      - "./infra/development/:/infra"
+    depends_on:
+      - cloud
+    entrypoint: ["/bin/sh", "setup-infra.sh"]
+
+volumes:
+  pg_data:
+  cloud_data:
